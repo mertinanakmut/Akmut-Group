@@ -1,0 +1,106 @@
+
+-- ==========================================================
+-- AKMUT GROUP - TAM VERİTABANI ŞEMASI (GÜNCEL SÜRÜM)
+-- ==========================================================
+-- Talimat: Bu kodun tamamını kopyalayıp Supabase SQL Editor'e yapıştırın ve RUN butonuna basın.
+
+-- 1. TABLOLARI OLUŞTUR
+-- ----------------------------------------------------------
+
+-- Kullanıcılar: Site ziyaretçilerinin temel kimlik bilgileri
+CREATE TABLE IF NOT EXISTS public.site_users (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    email TEXT UNIQUE NOT NULL,
+    first_name TEXT,
+    last_name TEXT,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Erişim Logları: IP ve GPS tabanlı konum verileri
+CREATE TABLE IF NOT EXISTS public.access_logs (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID REFERENCES public.site_users(id) ON DELETE CASCADE,
+    user_agent TEXT,
+    ip_address TEXT,
+    city TEXT,
+    country TEXT,
+    latitude NUMERIC,
+    longitude NUMERIC,
+    accessed_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Sohbet Geçmişi: AI ve kullanıcı mesajları
+CREATE TABLE IF NOT EXISTS public.chat_history (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID REFERENCES public.site_users(id) ON DELETE CASCADE,
+    sender_role TEXT CHECK (sender_role IN ('user', 'model')),
+    message_content TEXT NOT NULL,
+    sent_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 2. GÜVENLİK (RLS) AKTİVASYONU
+-- ----------------------------------------------------------
+
+ALTER TABLE public.site_users ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.access_logs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.chat_history ENABLE ROW LEVEL SECURITY;
+
+-- 3. ANONİM KULLANICI POLİTİKALARI (WEB SİTESİ İÇİN)
+-- ----------------------------------------------------------
+
+DO $$ BEGIN
+    -- Site kullanıcıları kaydı ve kontrolü için
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Allow anonymous insert on site_users') THEN
+        CREATE POLICY "Allow anonymous insert on site_users" ON public.site_users FOR INSERT WITH CHECK (true);
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Allow anonymous select on site_users') THEN
+        CREATE POLICY "Allow anonymous select on site_users" ON public.site_users FOR SELECT USING (true);
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Allow anonymous update on site_users') THEN
+        CREATE POLICY "Allow anonymous update on site_users" ON public.site_users FOR UPDATE USING (true);
+    END IF;
+
+    -- Log kaydı için
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Allow anonymous insert on access_logs') THEN
+        CREATE POLICY "Allow anonymous insert on access_logs" ON public.access_logs FOR INSERT WITH CHECK (true);
+    END IF;
+
+    -- Sohbet mesajı göndermek için
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Allow anonymous insert on chat_history') THEN
+        CREATE POLICY "Allow anonymous insert on chat_history" ON public.chat_history FOR INSERT WITH CHECK (true);
+    END IF;
+END $$;
+
+-- 4. ADMIN (YETKİLİ) POLİTİKALARI (DASHBOARD İÇİN)
+-- ----------------------------------------------------------
+
+DO $$ BEGIN
+    -- Adminler her şeyi görebilir ve yönetebilir
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Allow authenticated full access on site_users') THEN
+        CREATE POLICY "Allow authenticated full access on site_users" ON public.site_users FOR ALL TO authenticated USING (true);
+    END IF;
+    
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Allow authenticated full access on access_logs') THEN
+        CREATE POLICY "Allow authenticated full access on access_logs" ON public.access_logs FOR ALL TO authenticated USING (true);
+    END IF;
+    
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Allow authenticated full access on chat_history') THEN
+        CREATE POLICY "Allow authenticated full access on chat_history" ON public.chat_history FOR ALL TO authenticated USING (true);
+    END IF;
+
+    -- Özel Sohbet Silme Yetkisi (Garantili)
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'Allow authenticated delete on chat_history') THEN
+        CREATE POLICY "Allow authenticated delete on chat_history" ON public.chat_history FOR DELETE TO authenticated USING (true);
+    END IF;
+END $$;
+
+-- 5. İNDEKSLEME (PERFORMANS İÇİN)
+-- ----------------------------------------------------------
+CREATE INDEX IF NOT EXISTS idx_chat_user_id ON public.chat_history(user_id);
+CREATE INDEX IF NOT EXISTS idx_logs_user_id ON public.access_logs(user_id);
+CREATE INDEX IF NOT EXISTS idx_users_email ON public.site_users(email);
+
+-- NOTLAR:
+-- 1. Bu tablo yapısı, admin panelindeki 'Sil' butonunun çalışmasını sağlar.
+-- 2. Sessiz GPS ve IP verileri 'access_logs' tablosuna kaydedilir.
+-- 3. RLS politikaları, dışarıdan sadece veri girişine izin verirken, verileri görme ve silme yetkisini sadece giriş yapmış adminlere tanımlar.

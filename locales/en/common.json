@@ -1,0 +1,61 @@
+
+{
+  "metadata": {
+    "version": "2.1.1",
+    "lastUpdated": "2024-05-23T12:00:00Z"
+  },
+  "nav": {
+    "home": "COMMUNITY",
+    "companies": "VENTURES",
+    "model": "OUR MODEL",
+    "vision": "VISION",
+    "management": "MANAGEMENT",
+    "join": "JOIN US"
+  },
+  "footer": {
+    "intro": "Akmut Group is a Venture Studio ecosystem combining independent tech startups with engineering discipline and global vision.",
+    "quick_links": "QUICK LINKS",
+    "legal": "LEGAL",
+    "contact": "CONTACT",
+    "social": "SOCIAL MEDIA",
+    "kvkk": "KVKK / Data Privacy",
+    "terms": "User Agreement",
+    "cookies": "Cookie Policy",
+    "address": "Bilkent Cyberpark, Tepe Building, No: 1/14, Cankaya / ANKARA",
+    "rights": "All rights reserved."
+  },
+  "hero": {
+    "badge": "AKMUT TECH ECOSYSTEM",
+    "title_part1": "ENGINEERING THE",
+    "title_part2": "TECH-DRIVEN",
+    "title_part3": "GLOBAL FUTURE",
+    "subtitle": "Akmut Group is a dynamic ecosystem of independent ventures characterized by sharp engineering precision and a prestigious brand identity.",
+    "cta_primary": "EXPLORE VENTURES",
+    "cta_secondary": "OUR PROCESS"
+  },
+  "companies": {
+    "active": "PORTFOLIO COMPANIES",
+    "planned": "UPCOMING VENTURES",
+    "view_site": "OPEN PLATFORM"
+  },
+  "model": {
+    "title": "STRATEGIC MODEL",
+    "subtitle": "From ideation to global scale, we build our ventures with precision and discipline.",
+    "step1": "R&D & DISCOVERY",
+    "step2": "INCORPORATION",
+    "step3": "SCALABLE GROWTH",
+    "step4": "ECOSYSTEM SYNERGY"
+  },
+  "join": {
+    "title": "JOIN THE ECOSYSTEM",
+    "as_client": "AS A CLIENT",
+    "as_talent": "AS TALENT",
+    "as_partner": "AS A PARTNER"
+  },
+  "chatbot": {
+    "welcome": "Welcome to Akmut Group. How can I assist you today?",
+    "title": "Live Support",
+    "powered": "Customer Relations Department",
+    "placeholder": "Type your message..."
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "name": "Akmut Group | Expert Software Solutions",
+  "description": "Professional software development agency specialized in mobile, web, and logistics technologies. Focused on high-performance engineering and strategic growth.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}

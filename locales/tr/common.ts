@@ -1,0 +1,61 @@
+
+export const trCommon = {
+  "metadata": {
+    "version": "2.2.1",
+    "lastUpdated": "2024-05-24T15:00:00Z"
+  },
+  "nav": {
+    "home": "EKOSİSTEM",
+    "companies": "GİRİŞİMLER",
+    "model": "MODELİMİZ",
+    "vision": "VİZYONUMUZ",
+    "management": "YÖNETİM",
+    "join": "KATILIN"
+  },
+  "footer": {
+    "intro": "Akmut Group, bağımsız teknoloji girişimlerini mühendislik disiplini ve global vizyonla birleştiren bir Venture Studio ekosistemidir.",
+    "quick_links": "HIZLI ERİŞİM",
+    "legal": "HUKUKİ",
+    "contact": "İLETİŞİM",
+    "social": "SOSYAL MEDYA",
+    "kvkk": "KVKK Aydınlatma Metni",
+    "terms": "Kullanıcı Sözleşmesi",
+    "cookies": "Çerez Politikası",
+    "address": "Bilkent Cyberpark, Tepe Binası, No: 1/14, Çankaya / ANKARA",
+    "rights": "Tüm hakları saklıdır."
+  },
+  "hero": {
+    "badge": "AKMUT TEKNOLOJİ GİRİŞİM GRUBU",
+    "title_part1": "KESKİN MÜHENDİSLİK",
+    "title_part2": "İLE GELECEĞİ",
+    "title_part3": "YÖNETİN",
+    "subtitle": "Akmut Group, bağımsız girişimleri tek bir teknolojik sinerji altında toplayan, disiplinli mühendislik prensipleriyle yönetilen bir teknoloji ekosistemidir.",
+    "cta_primary": "EKOSİSTEMİ KEŞFET",
+    "cta_secondary": "ÜRETİM MODELİMİZ"
+  },
+  "companies": {
+    "active": "AKTİF GİRİŞİMLER",
+    "planned": "GELECEK VİZYONU",
+    "view_site": "PLATFORMU AÇ"
+  },
+  "model": {
+    "title": "MÜHENDİSLİK MODELİMİZ",
+    "subtitle": "Fikir aşamasından küresel ölçeğe, her bir girişimimizi hassasiyet ve disiplinle inşa ediyoruz.",
+    "step1": "AR-GE VE KEŞİF",
+    "step2": "YAPILANDIRMA",
+    "step3": "ÖLÇEKLENEBİLİR BÜYÜME",
+    "step4": "EKOSİSTEM SİNERJİSİ"
+  },
+  "join": {
+    "title": "BİRLİKTE İNŞA EDELİM",
+    "as_client": "MÜŞTERİ OLARAK",
+    "as_talent": "UZMAN KADRO OLARAK",
+    "as_partner": "İŞ ORTAĞI OLARAK"
+  },
+  "chatbot": {
+    "welcome": "Akmut Group ekosistemine hoş geldiniz. Ben kurumsal asistanınızım. Size nasıl yardımcı olabilirim?",
+    "title": "Kurumsal Destek",
+    "powered": "Müşteri İlişkileri Departmanı",
+    "placeholder": "Mesajınızı buraya yazın..."
+  }
+};
