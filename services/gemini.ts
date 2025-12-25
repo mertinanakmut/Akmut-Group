@@ -1,13 +1,18 @@
-
 import { GoogleGenAI } from "@google/genai";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// API anahtarını process.env üzerinden güvenli bir şekilde alıyoruz
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || "" });
 
 export const getAIResponse = async (prompt: string, context: string) => {
+  if (!process.env.API_KEY) {
+    console.warn("API_KEY environment variable is missing.");
+    return "Şu an bağlantı kurulamıyor, lütfen çevre değişkenlerini kontrol edin.";
+  }
+
   try {
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
-      contents: prompt,
+      contents: [{ parts: [{ text: prompt }] }],
       config: {
         systemInstruction: `Siz Akmut Group'un dijital asistanısınız. 
 
@@ -30,10 +35,12 @@ KATİ KURALLAR:
 5. DİL: Profesyonel, keskin ve samimi.
 
 Bağlam Bilgisi: ${context}.`,
-        temperature: 0.4, // Daha tutarlı ve bilgi odaklı cevaplar için.
+        temperature: 0.4,
       },
     });
-    return response.text;
+    
+    // .text() metot değil bir mülktür (property), son güncellemelere göre erişim sağlandı.
+    return response.text || "Üzgünüm, şu an yanıt veremiyorum.";
   } catch (error) {
     console.error("Gemini API Error:", error);
     return "Bir bağlantı sorunu oluştu, lütfen tekrar deneyin.";
